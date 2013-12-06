@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My First Map - Week 1 Project</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="main.css">
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script>
+	var map;
+	var armidale = new google.maps.LatLng(-30.51, 151.67);
+	var walcha = new google.maps.LatLng(-30.99, 151.60);
+	var markers = [armidale, walcha];
+	var marker;
+
+
+	function initialize() {
+  		var mapOptions = {
+    		zoom: 9,
+    		center: armidale
+  		};
+
+  		map = new google.maps.Map(document.getElementById('map-canvas'),
+      		mapOptions);
+
+		//add info window to map
+
+		var windowContent = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h2 id="firstHeading" class="firstHeading">Armidale</h2>'+
+      '<div id="bodyContent">'+
+      '<p><b>Armidale</b>, a small town of approx 24 000 people, is where I grew up.</p>'+
+      '</div>'+
+      '</div>';
+
+    	var infowindowOptions = {
+      		position: armidale,
+      		content: windowContent
+    	};
+
+    	var infowindow = new google.maps.InfoWindow(infowindowOptions);
+
+		var markerOptions = {
+			position: markers[0],
+		};
+
+		marker = new google.maps.Marker(markerOptions);
+    	marker.setMap(map);
+
+		google.maps.event.addListener(marker, 'click', function() {
+			infowindow.open(map, marker);
+		});
+
+		google.maps.event.addListener(infowindow, 'closeclick', nextStep);
+
+	}
+
+	function nextStep() {
+		map.panTo(walcha);
+		var markerOptions = {
+			position: markers[1]
+		};
+		marker = new google.maps.Marker(markerOptions);
+    	marker.setMap(map);
+
+		var windowContent = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h2 id="firstHeading" class="firstHeading">Walcha</h2>'+
+      '<div id="bodyContent">'+
+      '<p><b>Walcha</b>, an even smaller town of only 1600 people, is where I was born' +
+	  ' and where my father owns a property still.</p>'+
+      '</div>'+
+      '</div>';
+
+    	var infowindowOptions = {
+      		position: walcha,
+      		content: windowContent
+    	};
+		
+		var infowindow = new google.maps.InfoWindow(infowindowOptions);
+
+		google.maps.event.addListener(marker, 'click', function() {
+			infowindow.open(map, marker);
+		});
+	}
+
+	google.maps.event.addDomListener(window, 'load', initialize);
+	
+
+    </script>
+  </head>
+  <body>
+    <div id="panel" style="margin-left: -52px">
+      <button id="drop" value="Push me!">Drop Markers</button>
+     </div>
+    <div id="map-canvas"></div>
+  </body>
+</html>
